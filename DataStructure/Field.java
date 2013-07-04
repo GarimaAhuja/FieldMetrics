@@ -20,6 +20,16 @@ public class Field
 	private double Favg;
 	//to store maximum entropy
 	private double HMax;
+	//to store closed form u-value
+	private double UVal;
+	//to store potential pairs formed if used as single blocking variable
+	private int pairs;
+	//to store logPairs
+	private double logPairs;
+	//to store HMax%
+	private double HMaxPercent;
+	//to store N%
+	private double NPercent;
 
 	public void Field()
 	{
@@ -73,5 +83,45 @@ public class Field
 	public void setHMax(double HMax)
 	{
 		this.HMax=HMax;
+	}
+	public double getUVal()
+	{
+		return UVal;
+	}
+	public void setUVal(double UVal)
+	{
+		this.UVal=UVal;
+	}
+	public int getPairs()
+	{
+		return pairs;
+	}
+	public void setPairs(int pairs)
+	{
+		this.pairs=pairs;
+	}
+	public double getLogPairs()
+	{
+		return logPairs;
+	}
+	public void setLogPairs(double logPairs)
+	{
+		this.logPairs=logPairs;
+	}
+	public double getHMaxPercent()
+	{
+		return HMaxPercent;
+	}
+	public void setHMaxPercent(double HMaxPercent)
+	{
+		this.HMaxPercent=HMaxPercent;
+	}
+	public double getNPercent()
+	{
+		return NPercent;
+	}
+	public void setNPercent(double NPercent)
+	{
+		this.NPercent=NPercent;
 	}
 }

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 import java.lang.Math;
 import DataStructure.Field;
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class FieldMetricsImplementation
 {
@@ -115,7 +117,7 @@ public class FieldMetricsImplementation
 	
 	/**
 	  *function to calculate average frequency of unique values in the field/column
-	   *@param data of the field/column in the form of list of String
+	   *@param total number of records and total number of unique values in that field
 	   *@return averageFrequency 
 	  **/
 	public static double calculateAverageFrequency(int totalRecords,int UqVal)
@@ -127,7 +129,7 @@ public class FieldMetricsImplementation
 
 	/**
 	  *function to calcuate maximum entropy
-	  *@param data of the field/column in the form of list of String
+	  *@param total number of records, total number of unique values in the field, frequency average of the values  
 	   *@return HMax
 	  **/
 	public static double calculateHMax(int totalRecords, int UqVal, double Favg)
@@ -137,14 +139,102 @@ public class FieldMetricsImplementation
 	}
 
 
-	//public static double calculateUVal(List<String> values,int totalRecords)
-	//{
-	//}
+	/**
+	  *function to calcuate closed-form u-value
+	  *@param data of the field/column in the form of list of String and total number of records
+	   *@return UVal
+	  **/
+	public static double calculateUVal(List<String> values,int totalRecords)
+	{
+		double UVal=0;
+		Map<String, Integer> map = new HashMap<String, Integer>();
+
+		// count the occurrences of each value
+		for (String sequence : values) {
+			if (!map.containsKey(sequence)) {
+				map.put(sequence, 0);
+			}
+			map.put(sequence, map.get(sequence) + 1);
+		}
+
+		HashSet<String> uniqueValues = new HashSet<String>(values);
+		for (String v : uniqueValues)
+		{
+			UVal = UVal+((double)map.get(v)/(double)totalRecords)*((double)map.get(v)/(double)totalRecords);
+		}
+		return UVal;
+	}
+	
+	/**
+	  *function to calcuate pairs formed if used as single blocking variable
+	  *@param data of the field/column in the form of list of String
+	   *@return pairs
+	  **/
+	public static int calculatePairs(List<String> values)
+	{
+		int i,j;
+		int pairs=0;
+		for(i=0;i<values.size();i++)
+		{
+			for(j=i+1;j<values.size();j++)
+			{
+				if((!values.get(i).equals(""))&&(values.get(i).equals(values.get(j))))
+				{
+					pairs++;
+				}
+			}
+		}
+		return pairs;
+	}
+	
+	/**
+	  *function to calcuate logPairs 
+	  *@param pairs
+	   *@return logPairs
+	  **/
+	public static double calculateLogPairs(int pairs)
+	{
+		double logPairs = Math.log(pairs)/Math.log(10);
+		return logPairs;
+	}
+
+	/**
+	  *function to calculate HMax%
+	  *@param H,HMax
+	  *@return HMax%
+	  **/
+	public static double calculateHMaxPercent(double H,double HMax)
+	{
+		return H/HMax;
+	}
+	
+	/**
+	  *function to calculate N%
+	  *@param N,total number of records
+	  *@return N%
+	  **/
+	public static double calculateNPercent(int N,int totalRecords)
+	{
+		return (double)N/(double)totalRecords;
+	}
+
+	//to print field metrics 
+	public static void printFieldMetrics(List<Field> fields)
+	{
+		int i;
+		System.out.println("Col|H|Hmax|Hmax%|UqVal|Favg|N|N%|Uval|pairs|log(pairs)");
+		for(i=0;i<fields.size();i++)
+		{
+			System.out.println(fields.get(i).getFieldName()+"|"+fields.get(i).getH()+"|"+fields.get(i).getHMax()+"|"+fields.get(i).getHMaxPercent()+"|"+fields.get(i).getUqVal()+"|"+fields.get(i).getFavg()+"|"+fields.get(i).getN()+"|"+fields.get(i).getNPercent()+"|"+fields.get(i).getUVal()+"|"+fields.get(i).getPairs()+"|"+fields.get(i).getLogPairs());			
+		}
+	}
 
 	public static void main(String args[])
 	{
 		int i,j;
 		List<Field> fields;
+
+		//getting field data from file
 		fields=getDataFromFile("testData.txt");
 
 		//calculating field metrics
@@ -164,6 +254,24 @@ public class FieldMetricsImplementation
 
 			//getting HMax
 			fields.get(i).setHMax(calculateHMax(fields.get(i).fieldData.size(),fields.get(i).getUqVal(),fields.get(i).getFavg()));
+			
+			//getting UVal
+			fields.get(i).setUVal(calculateUVal(fields.get(i).fieldData,fields.get(i).fieldData.size()));
+			
+			//getting pairs
+			fields.get(i).setPairs(calculatePairs(fields.get(i).fieldData));
+
+			//getting log(pairs)
+			fields.get(i).setLogPairs(calculateLogPairs(fields.get(i).getPairs()));	
+
+			//getting HMaxPercent
+			fields.get(i).setHMaxPercent(calculateHMaxPercent(fields.get(i).getH(),fields.get(i).getHMax()));	
+			
+			//getting NPercent			
+			fields.get(i).setNPercent(calculateNPercent(fields.get(i).getN(),fields.get(i).fieldData.size()));	
 		}
+
+		//printing field metrics
+		printFieldMetrics(fields);
 	}
 }
