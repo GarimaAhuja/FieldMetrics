@@ -234,8 +234,12 @@ public class FieldMetricsImplementation
 		int i,j;
 		List<Field> fields;
 
+		
 		//getting field data from file
-		fields=getDataFromFile("testData.txt");
+		fields=getDataFromFile("testDataLakh.txt");
+		
+		//to time time taken by the code to run
+		long start=System.nanoTime();
 
 		//calculating field metrics
 		for(i=0;i<fields.size();i++)
@@ -270,8 +274,12 @@ public class FieldMetricsImplementation
 			//getting NPercent			
 			fields.get(i).setNPercent(calculateNPercent(fields.get(i).getN(),fields.get(i).fieldData.size()));	
 		}
+		
+		//to time time taken by the code to run
+		long end=System.nanoTime();
 
 		//printing field metrics
 		printFieldMetrics(fields);
+		System.out.println("\nTime taken by code to run: "+(end-start));
 	}
 }
