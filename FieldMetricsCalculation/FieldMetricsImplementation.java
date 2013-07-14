@@ -1,3 +1,5 @@
+package FieldMetricsCalculation;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -8,7 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 import java.lang.Math;
-import DataStructure.Field;
+import FieldMetricsCalculation.DataStructure.Field;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -236,10 +238,10 @@ public class FieldMetricsImplementation
 
 		
 		//getting field data from file
-		fields=getDataFromFile("testDataLakh.txt");
+		fields=getDataFromFile("FieldMetricsCalculation/testData.txt");
 		
-		//to time time taken by the code to run
-		long start=System.nanoTime();
+		//to calculate time taken by the code to run
+		//long start=System.nanoTime();
 
 		//calculating field metrics
 		for(i=0;i<fields.size();i++)
@@ -275,11 +277,11 @@ public class FieldMetricsImplementation
 			fields.get(i).setNPercent(calculateNPercent(fields.get(i).getN(),fields.get(i).fieldData.size()));	
 		}
 		
-		//to time time taken by the code to run
-		long end=System.nanoTime();
+		//to calculate time taken by the code to run
+		//long end=System.nanoTime();
 
 		//printing field metrics
 		printFieldMetrics(fields);
-		System.out.println("\nTime taken by code to run: "+(end-start));
+		//System.out.println("\nTime taken by code to run: "+(end-start));
 	}
 }

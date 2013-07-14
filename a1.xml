@@ -1,0 +1,14 @@
+<node attribute="Hmax%" value=".999">
+	<node attribute="Target" value="0.00">
+	</node>
+	<node attribute="Uval" value="0.01">
+		<node attribute="Target" value="0.00">
+		</node>
+		<node attribute="log(pairs)" value="3">
+			<node attribute="Target" value="0.00">
+			</node>
+			<node attribute="Target" value="1.00">
+			</node>
+		</node>
+	</node>
+</node>

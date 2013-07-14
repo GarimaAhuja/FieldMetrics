@@ -1,4 +1,4 @@
-package DataStructure;
+package FieldMetricsCalculation.DataStructure;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -30,6 +30,8 @@ public class Field
 	private double HMaxPercent;
 	//to store N%
 	private double NPercent;
+	//to store target: target = 1 if field is good for matching, 0 otherwise
+	private int target;
 
 	public void Field()
 	{
@@ -123,5 +125,13 @@ public class Field
 	public void setNPercent(double NPercent)
 	{
 		this.NPercent=NPercent;
+	}
+	public int getTarget()
+	{
+		return target;
+	}
+	public void setTarget(int target)
+	{
+		this.target = target;
 	}
 }
